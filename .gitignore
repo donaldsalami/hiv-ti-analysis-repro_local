@@ -1,0 +1,20 @@
+# R and RStudio
+.Rhistory
+.RData
+.Rproj.user/
+.Ruserdata
+.Rproj.user/**
+
+# renv
+renv/library/
+renv/staging/
+renv/python/
+
+# OS
+.DS_Store
+
+# Data
+data/*.csv
+data/*.rds
+data/*.parquet
+!data/README.md

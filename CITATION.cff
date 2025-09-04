@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+title: HIV Treatment Interruption Analysis — Reproducible Repository (Synthetic Data)
+message: If you use this repository, please cite it as below.
+authors:
+  - family-names: Salami
+    given-names: Don
+    affiliation: University of Maryland Baltimore
+keywords:
+  - HIV
+  - ART
+  - treatment interruption
+  - survival analysis
+  - mediation
+  - Kenya
+license: MIT
