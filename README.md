@@ -14,7 +14,7 @@ with **fully synthetic (dummy) data** so results are reproducible without sharin
 - `data-raw/`
   - `generate_dummy_data.R`: now aligned with all factor levels used by mediation scripts
 - `data/`
-  - `Baseline_iit_df_Final_4Aug25.csv`
+  - `Time_invariant_df_Final_4Aug25`
   - `Time_dependent_iit_df_Final_4Aug25.csv`
   - `README.md`
 - `figures/`, `outputs/`: created by scripts
