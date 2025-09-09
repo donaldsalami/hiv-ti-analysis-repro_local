@@ -52,8 +52,8 @@ tstop     <- round(time_m * 30.44, 1)
 # status: 0=censor, 1=interruption, 2=competing
 status <- sample(c(0,1,2), N, replace=TRUE, prob=c(0.25, 0.60, 0.15))
 
-# Baseline data (time-invariant) + ART_durationMths for mediation
-Baseline_iit_df <- data.frame(
+# Time-invariant data + ART_durationMths for mediation
+Time_invariant_df <- data.frame(
   patientUID = seq_len(N),
   SiteCode = sites,
   status = status,
@@ -129,7 +129,7 @@ for (i in seq_len(N)) {
 Time_dependent_iit_df <- do.call(rbind, tv_list)
 
 if (!dir.exists("data")) dir.create("data", recursive = TRUE)
-readr::write_csv(Baseline_iit_df, "data/Baseline_iit_df_Final_4Aug25.csv")
+readr::write_csv(Time_invariant_df, "data/Time_invariant_df_Final_4Aug25.csv")
 readr::write_csv(Time_dependent_iit_df, "data/Time_dependent_iit_df_Final_4Aug25.csv")
 
-message("Wrote synthetic: data/Baseline_iit_df_Final_4Aug25.csv and data/Time_dependent_iit_df_Final_4Aug25.csv")
+message("Wrote synthetic: data/Time_invariant_df_Final_4Aug25.csv and data/Time_dependent_iit_df_Final_4Aug25.csv")

@@ -18,7 +18,7 @@ time_varying_df <- time_varying_df %>%
          State_to   = as.integer(state_map[State_to]))
 
 # Transition keys (plot set)
-transition_map <- list("1_2"=1,"2_3"=2,"2_4"=3,"2_5"=4,"3_4"=5,"3_5"=6,"4_3"=7,"4_5"=8)
+transition_map <- list("1_2"=1,"1_5"=2,"2_3"=3,"2_4"=4,"2_5"=5,"3_4"=6,"3_5"=7,"4_3"=8,"4_5"=9)
 
 mutistate_df <- time_varying_df %>%
   mutate(trans_key = paste(State_from, State_to, sep="_"),
@@ -34,19 +34,19 @@ facs <- c("AgeARTStartCategory","Gender","EducationLevel","MaritalStatus","Occup
 mutistate_df <- mutistate_df %>% mutate(across(all_of(facs), as.factor))
 
 mutistate_df <- within(mutistate_df, {
-  AgeARTStartCategory  <- relevel(AgeARTStartCategory, ref="0-14")
-  Gender               <- relevel(Gender, ref="Female")
-  EducationLevel       <- relevel(EducationLevel, ref="Tertiary")
-  MaritalStatus        <- relevel(MaritalStatus, ref="Other")
-  Occupation           <- relevel(Occupation, ref="Employed")
-  NCD                  <- relevel(NCD, ref="0")
-  Adherence            <- relevel(Adherence, ref="Good")
-  WHOStage             <- relevel(WHOStage, ref="1")
-  ViralLoadCategory    <- relevel(ViralLoadCategory, ref="<200")
-  StabilityAssessment  <- relevel(StabilityAssessment, ref="Stable")
-  BaselineRegimen      <- relevel(BaselineRegimen, ref="Other")
-  RegimenLine          <- relevel(RegimenLine, ref="Other")
-  MMD                  <- relevel(MMD, ref="<3 Months")
+  AgeARTStartCategory  <- relevel(AgeARTStartCategory, ref = "25-34")
+  Gender               <- relevel(Gender, ref = "Female")
+  EducationLevel       <- relevel(EducationLevel, ref = "None")
+  MaritalStatus        <- relevel(MaritalStatus, ref = "Married Monogamous")
+  Occupation           <- relevel(Occupation, ref = "Unknown")
+  NCD                  <- relevel(NCD, ref = "0")
+  Adherence            <- relevel(Adherence, ref = "Good")
+  WHOStage             <- relevel(WHOStage, ref = "1")
+  ViralLoadCategory    <- relevel(ViralLoadCategory, ref = "<200")
+  StabilityAssessment  <- relevel(StabilityAssessment, ref = "Stable")
+  BaselineRegimen      <- relevel(BaselineRegimen, ref = "2NRTIs + INSTI")
+  RegimenLine          <- relevel(RegimenLine, ref = "FirstLine")
+  MMD                  <- relevel(MMD, ref = "<3 Months")
   DifferentiatedCare   <- relevel(DifferentiatedCare, ref="Standard Care")
   PwP_countCategory    <- relevel(PwP_countCategory, ref="0")
   YearStartART         <- relevel(YearStartART, ref="2017")
@@ -72,10 +72,10 @@ cox_frailty_ms <- coxph(
   data = mutistate_df, method="efron", model=TRUE
 )
 
-# Transitions structure (no absorbing from A to D directly in this plotting set)
+# Transitions structure 
 tmat <- transMat(
   x = list(
-    c(2),      # A -> B
+    c(2,5),      # A -> B,D
     c(3,4,5),  # B -> R,C,D
     c(4,5),    # R -> C,D
     c(3,5),    # C -> R,D
@@ -186,8 +186,8 @@ fit_transition_model <- function(k) {
   formula_k <- as.formula(paste("Surv(tstart, tstop, status) ~", paste(ms_covariates, collapse = " + ")))
   survival::coxph(formula_k, data = df_k, method = "efron")
 }
-models_by_trans <- purrr::map(1:8, fit_transition_model)
-names(models_by_trans) <- paste0("trans", 1:8)
+models_by_trans <- purrr::map(1:9, fit_transition_model)
+names(models_by_trans) <- paste0("trans", 1:9)
 
 extract_hr_table <- function(model, transition_id) {
   if (is.null(model)) return(NULL)

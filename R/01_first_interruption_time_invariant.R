@@ -11,13 +11,13 @@ suppressPackageStartupMessages({
 })
 
 # ---- Data ----
-infile <- file.path(DATA_DIR, "Baseline_iit_df_Final_4Aug25.csv")
+infile <- file.path(DATA_DIR, "Time_invariant_df_Final_4Aug25.csv")
 if (!file.exists(infile)) {
   stop("Missing input: ", infile, "\nRun data-raw/generate_dummy_data.R first.")
 }
-Baseline_iit_df <- readr::read_csv(infile, show_col_types = FALSE)
+Time_invariant_df <- readr::read_csv(infile, show_col_types = FALSE)
 
-time_invariant_df <- Baseline_iit_df %>%
+time_invariant_df <- Time_invariant_df %>%
   select(patientUID, SiteCode, status, tstop,
          AgeARTStartCategory, Gender, EducationLevel, MaritalStatus, Occupation, NCD,
          Adherence, WHOStage, ViralLoadCategory, StabilityAssessment, BaselineRegimen,
@@ -33,18 +33,18 @@ facs <- c("AgeARTStartCategory","Gender","EducationLevel","MaritalStatus","Occup
 time_invariant_df <- time_invariant_df %>% mutate(across(all_of(facs), as.factor))
 
 time_invariant_df <- within(time_invariant_df, {
-  AgeARTStartCategory  <- relevel(AgeARTStartCategory, ref = "0-14")
+  AgeARTStartCategory  <- relevel(AgeARTStartCategory, ref = "25-34")
   Gender               <- relevel(Gender, ref = "Female")
-  EducationLevel       <- relevel(EducationLevel, ref = "Tertiary")
-  MaritalStatus        <- relevel(MaritalStatus, ref = "Other")
-  Occupation           <- relevel(Occupation, ref = "Employed")
+  EducationLevel       <- relevel(EducationLevel, ref = "None")
+  MaritalStatus        <- relevel(MaritalStatus, ref = "Married Monogamous")
+  Occupation           <- relevel(Occupation, ref = "Unknown")
   NCD                  <- relevel(NCD, ref = "0")
   Adherence            <- relevel(Adherence, ref = "Good")
   WHOStage             <- relevel(WHOStage, ref = "1")
   ViralLoadCategory    <- relevel(ViralLoadCategory, ref = "<200")
   StabilityAssessment  <- relevel(StabilityAssessment, ref = "Stable")
-  BaselineRegimen      <- relevel(BaselineRegimen, ref = "Other")
-  RegimenLine          <- relevel(RegimenLine, ref = "Other")
+  BaselineRegimen      <- relevel(BaselineRegimen, ref = "2NRTIs + INSTI")
+  RegimenLine          <- relevel(RegimenLine, ref = "FirstLine")
   MMD                  <- relevel(MMD, ref = "<3 Months")
   DifferentiatedCare   <- relevel(DifferentiatedCare, ref = "Standard Care")
   PwP_countCategory    <- relevel(PwP_countCategory, ref = "0")
